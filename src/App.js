@@ -1,6 +1,7 @@
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { memo } from "react";
 import {
   getAllPeople,
   getAllPlanets,
@@ -15,37 +16,23 @@ const App = () => {
   );
   const dispatch = useDispatch();
 
-  // const getAllPlanetsData = async () => {
-  //   const species = await axios.get("https://swapi.dev/api/species");
-  //   let updateSpecies = species.data.results.filter((specie) => {
-  //     if (specie.classification == "reptile") {
-  //       return specie;
-  //     }
-  //   });
-  //   console.log(updateSpecies);
-  // };
-
   useEffect(() => {
     if (!receivedAll) {
       Promise.all([
         dispatch(getAllPlanets()),
         dispatch(getAllPeople()),
         dispatch(getAllSpecies()),
-      ]).then(([planets, people, species]) => {
+      ]).then(([species]) => {
         dispatch(setReceivedAll(true));
         
         // let array = [...planets.payload, ...people.payload, ...species.payload];
-        let filteredArray = species.payload.ilter((item) => {
+        let filteredArray = species.payload.filter((item) => {
           if(item.classification == "reptile"){
             return item;
           }
         });
-        console.log(planets.payload);
-        console.log(people.payload);
-        console.log(species.payload);
+        console.log(filteredArray);
       });
-    } else {
-      // console.log(species);
     }
   }, [receivedAll]);
 
@@ -60,22 +47,6 @@ const App = () => {
             >
               <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">{item.name}</div>
-                <p className="text-gray-700 text-base">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Voluptatibus quia, nulla! Maiores et perferendis eaque,
-                  exercitationem praesentium nihil.
-                </p>
-              </div>
-              <div className="px-6 pt-4 pb-2">
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #photography
-                </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #travel
-                </span>
-                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                  #winter
-                </span>
               </div>
             </div>
           ))}
@@ -84,4 +55,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default memo(App);

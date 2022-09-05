@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = "https://swapi.dev/api/";
+const baseUrl = "https://swapi.dev/api";
 
 const initialState = {
   planets: null,
